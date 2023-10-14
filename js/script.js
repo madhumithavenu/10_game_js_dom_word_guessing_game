@@ -26,9 +26,13 @@ function initGame(e){
     if(key.match(/^[A-Za-z]+$/)){
         console.log(key);
         if(word.includes(key)){ //if user letter found in the word
-            // correctLetters += key;
-            // inputs.querySelectorAll("input")[i].value = key;
-            console.log("letter found");
+            for (let i = 0; i < word.length; i++) {
+                //showing matched letter in the input value
+                if(word[i] === key) {
+                    // correctLetters += key;
+                    inputs.querySelectorAll("input")[i].value = key;
+                }
+            }
         }else{
             console.log("letter not found");
         }

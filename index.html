@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Word guessing game</title>
 </head>
 <body>
-    
+    <div class="wrapper">
+        <h1>Guess the Word</h1>
+        <div class="content">
+            <div class="inputs">
+                <input type="text" disabled>
+                <input type="text" disabled>
+                <input type="text" disabled>
+                <input type="text" disabled>
+                <input type="text" disabled>
+                <input type="text" disabled>
+            </div>
+            <div class="details">
+                <p class="hint">Hint: <span>Hint will be shown here</span></p>
+                <p class="guess-left">Hint: <span>Remaining Guesses: </span>10</p>
+                <p class="wrong-letter">Wrong letters: <span>a,b,c,d</span></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

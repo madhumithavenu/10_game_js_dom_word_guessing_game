@@ -1,9 +1,10 @@
 const inputs = document.querySelector(".inputs"),
     resetBtn = document.querySelector(".reset-btn"),
     hint = document.querySelector(".hint span"),
+    wrongLetter = document.querySelector(".wrong-letter span")
     typingInput = document.querySelector(".typing-input");
 
-let word;
+let word, incorrects = [];
 
 function randomWord() {
     //getting random object from list
@@ -34,9 +35,11 @@ function initGame(e){
                 }
             }
         }else{
-            console.log("letter not found");
+            incorrects.push(`${key}`);
         }
     }
+    wrongLetter.innerText = incorrects;
+    typingInput.value = ""; 
 }
 
 resetBtn.addEventListener("click", randomWord);

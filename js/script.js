@@ -1,47 +1,62 @@
 const inputs = document.querySelector(".inputs"),
-    resetBtn = document.querySelector(".reset-btn"),
-    hint = document.querySelector(".hint span"),
-    wrongLetter = document.querySelector(".wrong-letter span")
-    typingInput = document.querySelector(".typing-input");
+hintTag = document.querySelector(".hint span"),
+guessLeft = document.querySelector(".guess-left span"),
+wrongLetter = document.querySelector(".wrong-letter span"),
+resetBtn = document.querySelector(".reset-btn"),
+typingInput = document.querySelector(".typing-input");
 
-let word, incorrects = [];
+let word, maxGuesses, incorrectLetters = [], correctLetters = [];
 
 function randomWord() {
-    //getting random object from list
-    let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-    word = ranObj.word; //getting word of random object
-    console.log(word);
-
-    hint.innerText = ranObj.hint;
+    let ranItem = wordList[Math.floor(Math.random() * wordList.length)];
+    word = ranItem.word;
+    maxGuesses = word.length >= 5 ? 8 : 6;
+    correctLetters = []; incorrectLetters = [];
+    hintTag.innerText = ranItem.hint;
+    guessLeft.innerText = maxGuesses;
+    wrongLetter.innerText = incorrectLetters;
 
     let html = "";
     for (let i = 0; i < word.length; i++) {
-        html += `<input type="text" disabled>`
+        html += `<input type="text" disabled>`;
+        inputs.innerHTML = html;
     }
-    inputs.innerHTML = html;
 }
 randomWord();
 
-function initGame(e){
-    let key = e.target.value;
-    if(key.match(/^[A-Za-z]+$/)){
-        console.log(key);
-        if(word.includes(key)){ //if user letter found in the word
+function initGame(e) {
+    let key = e.target.value.toLowerCase();
+    if(key.match(/^[A-Za-z]+$/) && !incorrectLetters.includes(` ${key}`) && !correctLetters.includes(key)) {
+        if(word.includes(key)) {
             for (let i = 0; i < word.length; i++) {
-                //showing matched letter in the input value
-                if(word[i] === key) {
-                    // correctLetters += key;
+                if(word[i] == key) {
+                    correctLetters += key;
                     inputs.querySelectorAll("input")[i].value = key;
                 }
             }
-        }else{
-            incorrects.push(`${key}`);
+        } else {
+            maxGuesses--;
+            incorrectLetters.push(` ${key}`);
         }
+        guessLeft.innerText = maxGuesses;
+        wrongLetter.innerText = incorrectLetters;
     }
-    wrongLetter.innerText = incorrects;
-    typingInput.value = ""; 
+    typingInput.value = "";
+
+    setTimeout(() => {
+        if(correctLetters.length === word.length) {
+            alert(`Congrats! You found the word ${word.toUpperCase()}`);
+            return randomWord();
+        } else if(maxGuesses < 1) {
+            alert("Game over! You don't have remaining guesses");
+            for(let i = 0; i < word.length; i++) {
+                inputs.querySelectorAll("input")[i].value = word[i];
+            }
+        }
+    }, 100);
 }
 
 resetBtn.addEventListener("click", randomWord);
 typingInput.addEventListener("input", initGame);
+inputs.addEventListener("click", () => typingInput.focus());
 document.addEventListener("keydown", () => typingInput.focus());
